@@ -24,9 +24,9 @@ public class SuccessCreation
         bookingStoreMock.VerifyAll();
     }
 
-    private static Mock<IBookingStore> GetBookingStoreMock(int id, int rentalId, List<Domain.Booking.Booking> bookings)
+    private static Mock<IBookingRepository> GetBookingStoreMock(int id, int rentalId, List<Domain.Booking.Booking> bookings)
     {
-        var bookingStore = new Mock<IBookingStore>();
+        var bookingStore = new Mock<IBookingRepository>();
 
         bookingStore
             .Setup(x => x.GetByRentalId(It.Is<int>(x => x == rentalId)))
@@ -39,7 +39,7 @@ public class SuccessCreation
         return bookingStore;
     }
 
-    private static Mock<IMediator> GetMediatorMock(int rentalId, Mock<IBookingStore> bookingStoreMock)
+    private static Mock<IMediator> GetMediatorMock(int rentalId, Mock<IBookingRepository> bookingStoreMock)
     {
         var mediator = new Mock<IMediator>();
 
@@ -65,33 +65,9 @@ public class SuccessCreation
         yield return new object[] { rentalId, bookings };
 
 
-        bookings.Add(
-            new Domain.Booking.Booking
-            {
-                Id = 1,
-                Nights = 2,
-                Start = new DateOnly(2022, 1, 1),
-                RentalId = rentalId
-            });
-
-        bookings.Add(
-            new Domain.Booking.Booking
-            {
-                Id = 2,
-                Nights = 4,
-                Start = new DateOnly(2022, 2, 20),
-                RentalId = rentalId
-            });
-
-        bookings.Add(
-            new Domain.Booking.Booking
-            {
-                Id = 2,
-                Nights = 4,
-                Start = new DateOnly(2022, 2, 27),
-                RentalId = rentalId
-            }
-        );
+        bookings.Add(new Domain.Booking.Booking(1, rentalId, new DateOnly(2022, 1, 1), 2));
+        bookings.Add(new Domain.Booking.Booking(2, rentalId, new DateOnly(2022, 2, 20), 4));
+        bookings.Add(new Domain.Booking.Booking(3, rentalId, new DateOnly(2022, 2, 27), 4));
 
         yield return new object[] { rentalId, bookings };
     }

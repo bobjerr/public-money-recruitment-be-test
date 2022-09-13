@@ -2,12 +2,12 @@
 
 namespace VacationRental.Data
 {
-    public class BookingStore : IBookingStore
+    public class BookingRepository : IBookingRepository
     {
         private readonly SequenceEmulator _sequenceEmulator;
         private readonly IDictionary<int, Booking> _bookings;
 
-        public BookingStore()
+        public BookingRepository()
         {
             _bookings = new Dictionary<int, Booking>();
             _sequenceEmulator = new SequenceEmulator();

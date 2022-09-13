@@ -9,7 +9,7 @@ public class FailedCreation
     [Fact]
     public async Task InvalidNumberOfNights()
     {
-        var handler = new Domain.Booking.Create.Command(Mock.Of<IMediator>(), Mock.Of<IBookingStore>());
+        var handler = new Domain.Booking.Create.Command(Mock.Of<IMediator>(), Mock.Of<IBookingRepository>());
 
         var exception = await Assert.ThrowsAsync<ApplicationException>(async ()
             => await handler.Handle(new Domain.Booking.Create.Request(5, new DateOnly(2022, 2, 20), -5), CancellationToken.None));
@@ -36,9 +36,9 @@ public class FailedCreation
         Assert.Equal("Not available", exception.Message);
     }
 
-    private static Mock<IBookingStore> GetBookingStoreMock(int id, int rentalId, List<Domain.Booking.Booking> bookings)
+    private static Mock<IBookingRepository> GetBookingStoreMock(int id, int rentalId, List<Domain.Booking.Booking> bookings)
     {
-        var bookingStore = new Mock<IBookingStore>();
+        var bookingStore = new Mock<IBookingRepository>();
 
         bookingStore
             .Setup(x => x.GetByRentalId(It.Is<int>(x => x == rentalId)))
@@ -51,7 +51,7 @@ public class FailedCreation
         return bookingStore;
     }
 
-    private static Mock<IMediator> GetMediatorMock(int rentalId, Mock<IBookingStore> bookingStoreMock)
+    private static Mock<IMediator> GetMediatorMock(int rentalId, Mock<IBookingRepository> bookingStoreMock)
     {
         var mediator = new Mock<IMediator>();
 
@@ -74,25 +74,12 @@ public class FailedCreation
 
         var bookings = new List<Domain.Booking.Booking>();
 
-        bookings.Add(new Domain.Booking.Booking
-        {
-            Id = 1,
-            Nights = 1,
-            Start = new DateOnly(2022, 2, 20),
-            RentalId = rentalId
-        });
+        bookings.Add(new Domain.Booking.Booking(1, rentalId, new DateOnly(2022, 2, 20), 1));
 
         yield return new object[] { rentalId, bookings };
 
-
         bookings.Clear();
-        bookings.Add(new Domain.Booking.Booking
-        {
-            Id = 1,
-            Nights = 1,
-            Start = new DateOnly(2022, 2, 26),
-            RentalId = rentalId
-        });
+        bookings.Add(new Domain.Booking.Booking(1, rentalId, new DateOnly(2022, 2, 26), 1));
 
         yield return new object[] { rentalId, bookings };
     }

@@ -2,11 +2,11 @@
 
 namespace VacationRental.Data;
 
-public class RentalStore : IRentalStore
+public class RentalRepository : IRentalRepository
 {
     private readonly IDictionary<int, Rental> _rentals;
 
-    public RentalStore()
+    public RentalRepository()
     {
         _rentals = new Dictionary<int, Rental>();
     }

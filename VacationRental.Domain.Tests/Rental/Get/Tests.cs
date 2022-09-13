@@ -10,7 +10,7 @@ public class Tests
     public async Task SuccessfullyGetRental(int id)
     {
         var rental = new Domain.Rental.Rental(id, 5, 8);
-        var rentalStore = new Mock<IRentalStore>();
+        var rentalStore = new Mock<IRentalRepository>();
 
         rentalStore
             .Setup(x => x.Get(It.Is<int>(x => x == id)))
@@ -30,7 +30,7 @@ public class Tests
     public async Task FailedGetRental(int id)
     {
         var rental = new Domain.Rental.Rental(id, 5, 8);
-        var rentalStore = new Mock<IRentalStore>();
+        var rentalStore = new Mock<IRentalRepository>();
 
         rentalStore
             .Setup(x => x.Get(It.Is<int>(x => x == id)))

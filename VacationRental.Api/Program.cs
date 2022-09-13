@@ -14,8 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts => opts.SwaggerDoc("v1", new OpenApiInfo { Title = "Vacation rental information", Version = "v1" }));
 
 
-builder.Services.AddSingleton<IRentalStore, RentalStore>();
-builder.Services.AddSingleton<IBookingStore, BookingStore>();
+builder.Services.AddSingleton<IRentalRepository, RentalRepository>();
+builder.Services.AddSingleton<IBookingRepository, BookingRepository>();
 
 var assemblies = new[] { typeof(Startup), typeof(VacationRental.Domain.Startup) };
 

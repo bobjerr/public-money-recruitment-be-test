@@ -9,7 +9,7 @@ namespace VacationRental.Domain.Tests.Rental.Create
         [InlineData(5, 3, 4)]
         public async Task Successfully_Rental_Creation(int units, int preparationTimeInDays, int id)
         {
-            var rentalStore = new Mock<IRentalStore>();
+            var rentalStore = new Mock<IRentalRepository>();
 
             rentalStore
                 .Setup(x => x.Create(It.Is<int>(x => x == units), It.Is<int>(x => x == preparationTimeInDays)))

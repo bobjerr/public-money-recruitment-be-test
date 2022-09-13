@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VacationRental.Domain.Booking
 {
-    public interface IBookingStore
+    public interface IBookingRepository
     {
         Booking Get(int id);
 

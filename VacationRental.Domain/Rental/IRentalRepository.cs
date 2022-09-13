@@ -1,6 +1,6 @@
 ﻿namespace VacationRental.Domain.Rental;
 
-public interface IRentalStore
+public interface IRentalRepository
 {
     Rental Get(int id);
 

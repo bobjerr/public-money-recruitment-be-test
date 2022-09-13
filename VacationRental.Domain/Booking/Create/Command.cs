@@ -5,9 +5,9 @@ namespace VacationRental.Domain.Booking.Create;
 public class Command : IRequestHandler<Request, Response>
 {
     private readonly IMediator _mediator;
-    private readonly IBookingStore _bookingStore;
+    private readonly IBookingRepository _bookingStore;
 
-    public Command(IMediator mediator, IBookingStore bookingStore)
+    public Command(IMediator mediator, IBookingRepository bookingStore)
     {
         _mediator = mediator;
         _bookingStore = bookingStore;
@@ -18,12 +18,7 @@ public class Command : IRequestHandler<Request, Response>
         if (request.Nights < 0)
             throw new ApplicationException("Nights must be positive");
 
-        var newBooking = new Booking
-        {
-            Start = request.Start,
-            Nights = request.Nights,
-            RentalId = request.RentalId
-        };
+        var newBooking = new Booking(request.RentalId, request.Start, request.Nights);
 
         var rental = await GetRental(request.RentalId);
 

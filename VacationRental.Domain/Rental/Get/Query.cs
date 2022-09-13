@@ -4,9 +4,9 @@ namespace VacationRental.Domain.Rental.Get;
 
 public class Query : IRequestHandler<Request, Response>
 {
-    private readonly IRentalStore _rentalStore;
+    private readonly IRentalRepository _rentalStore;
 
-    public Query(IRentalStore rentalStore)
+    public Query(IRentalRepository rentalStore)
     {
         _rentalStore = rentalStore;
     }

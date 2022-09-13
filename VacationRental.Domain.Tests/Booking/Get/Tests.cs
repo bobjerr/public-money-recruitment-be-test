@@ -9,15 +9,9 @@ public class Tests
     [InlineData(5)]
     public async Task SuccessfullyGetBooking(int id)
     {
-        var booking = new Domain.Booking.Booking
-        {
-            Id = id,
-            Nights = 5,
-            Start = new DateOnly(2003, 2, 2),
-            RentalId = 1
-        };
+        var booking = new Domain.Booking.Booking(id, 1, new DateOnly(2003, 2, 2), 5);
 
-        var bookingStore = new Mock<IBookingStore>();
+        var bookingStore = new Mock<IBookingRepository>();
 
         bookingStore
             .Setup(x => x.Get(It.Is<int>(x => x == id)))

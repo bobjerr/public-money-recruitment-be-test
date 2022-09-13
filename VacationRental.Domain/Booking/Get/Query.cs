@@ -4,9 +4,9 @@ namespace VacationRental.Domain.Booking.Get;
 
 public class Query : IRequestHandler<Request, Response>
 {
-    private readonly IBookingStore _bookingStore;
+    private readonly IBookingRepository _bookingStore;
 
-    public Query(IBookingStore bookingStore)
+    public Query(IBookingRepository bookingStore)
     {
         _bookingStore = bookingStore;
     }

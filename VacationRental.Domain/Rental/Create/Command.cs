@@ -4,9 +4,9 @@ namespace VacationRental.Domain.Rental.Create;
 
 public class Command : IRequestHandler<Request, Response>
 {
-    private readonly IRentalStore _rentalStore;
+    private readonly IRentalRepository _rentalStore;
 
-    public Command(IRentalStore rentalStore)
+    public Command(IRentalRepository rentalStore)
     {
         _rentalStore = rentalStore;
     }
