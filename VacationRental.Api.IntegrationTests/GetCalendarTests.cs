@@ -1,11 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using VacationRental.Api.Models;
-using Xunit;
-
-namespace VacationRental.Api.Tests
+﻿namespace VacationRental.Api.MyTests
 {
     [Collection("Integration")]
     public class GetCalendarTests
