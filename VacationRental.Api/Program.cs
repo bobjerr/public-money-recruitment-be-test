@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using VacationRental.Api;
 using VacationRental.Data;
 using VacationRental.Domain.Booking;
+using VacationRental.Domain.Booking.Create;
 using VacationRental.Domain.Rental;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen(opts => opts.SwaggerDoc("v1", new OpenApiInfo { T
 
 builder.Services.AddSingleton<IRentalRepository, RentalRepository>();
 builder.Services.AddSingleton<IBookingRepository, BookingRepository>();
+builder.Services.AddSingleton<BookingLocker>();
 
 var assemblies = new[] { typeof(Startup), typeof(VacationRental.Domain.Startup) };
 

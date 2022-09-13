@@ -6,13 +6,15 @@ public class Command : IRequestHandler<Request, Response>
 {
     private readonly IMediator _mediator;
     private readonly IBookingRepository _bookingStore;
+    private readonly BookingLocker _bookingLocker;
 
-    public Command(IMediator mediator, IBookingRepository bookingStore)
+    public Command(IMediator mediator, IBookingRepository bookingStore, BookingLocker bookingLocker)
     {
         _mediator = mediator;
         _bookingStore = bookingStore;
+        _bookingLocker = bookingLocker;
     }
-    
+
     public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
         if (request.Nights < 0)
@@ -24,22 +26,25 @@ public class Command : IRequestHandler<Request, Response>
 
         var count = 0;
 
-        //todo: fix situation when several users try to book one rentalId at the same time
         var bookings = await GetBookings(request.RentalId);
-        foreach (var booking in bookings)
+
+        lock (_bookingLocker.GetLocker(request.RentalId))
         {
-            if (newBooking.Overlap(booking, rental.PreparationTimeInDays))
+            foreach (var booking in bookings)
             {
-                count++;
+                if (newBooking.Overlap(booking, rental.PreparationTimeInDays))
+                {
+                    count++;
 
-                if (count >= rental.Units)
-                    throw new ApplicationException("Not available");
+                    if (count >= rental.Units)
+                        throw new ApplicationException("Not available");
+                }
             }
+
+            var id = SaveBooking(newBooking);
+
+            return new Response(id);
         }
-
-        var id = SaveBooking(newBooking);
-
-        return new Response(id);
     }
 
     private async Task<IEnumerable<Booking>> GetBookings(int rentalId)

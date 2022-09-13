@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Moq;
 using VacationRental.Domain.Booking;
+using VacationRental.Domain.Booking.Create;
 
 namespace VacationRental.Domain.Tests.Booking.Create;
 
@@ -16,9 +17,9 @@ public class SuccessCreation
 
         var mediatorMock = GetMediatorMock(rentalId, bookingStoreMock);
 
-        var handler = new Domain.Booking.Create.Command(mediatorMock.Object, bookingStoreMock.Object);
+        var handler = new Command(mediatorMock.Object, bookingStoreMock.Object, new BookingLocker());
 
-        var response = await handler.Handle(new Domain.Booking.Create.Request(5, new DateOnly(2022, 2, 26), 4), CancellationToken.None);
+        var response = await handler.Handle(new Request(5, new DateOnly(2022, 2, 26), 4), CancellationToken.None);
 
         Assert.Equal(id, response.Id);
         bookingStoreMock.VerifyAll();
