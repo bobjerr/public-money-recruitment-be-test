@@ -11,6 +11,6 @@ public class Query : IRequestHandler<Request, Response>
         _rentalStore = rentalStore;
     }
 
-    public Task<Response> Handle(Request request, CancellationToken cancellationToken) 
+    public Task<Response> Handle(Request request, CancellationToken cancellationToken)
         => Task.FromResult(new Response(_rentalStore.Get(request.Id)));
 }

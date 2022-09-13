@@ -1,2 +1,2 @@
-global using Xunit;
 global using VacationRental.Api.Models;
+global using Xunit;

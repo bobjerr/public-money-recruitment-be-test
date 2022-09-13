@@ -14,7 +14,7 @@ namespace VacationRental.Domain.Tests.Rental.Create
             rentalStore
                 .Setup(x => x.Create(It.Is<int>(x => x == units), It.Is<int>(x => x == preparationTimeInDays)))
                 .Returns(id);
-            
+
             var handler = new Domain.Rental.Create.Command(rentalStore.Object);
 
             var response = await handler.Handle(new Domain.Rental.Create.Request(units, preparationTimeInDays), CancellationToken.None);

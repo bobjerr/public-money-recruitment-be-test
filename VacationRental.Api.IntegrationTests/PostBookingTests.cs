@@ -29,9 +29,9 @@ public class PostBookingTests
 
         var postBookingRequest = new BookingBindingModel
         {
-             RentalId = postRentalResult.Id,
-             Nights = 3,
-             Start = new DateTime(2001, 01, 01)
+            RentalId = postRentalResult.Id,
+            Nights = 3,
+            Start = new DateTime(2001, 01, 01)
         };
 
         ResourceIdViewModel postBookingResult;
@@ -41,15 +41,13 @@ public class PostBookingTests
             postBookingResult = await postBookingResponse.Content.ReadAsAsync<ResourceIdViewModel>();
         }
 
-        using (var getBookingResponse = await _client.GetAsync($"/api/v1/bookings/{postBookingResult.Id}"))
-        {
-            Assert.True(getBookingResponse.IsSuccessStatusCode);
+        using var getBookingResponse = await _client.GetAsync($"/api/v1/bookings/{postBookingResult.Id}");
+        Assert.True(getBookingResponse.IsSuccessStatusCode);
 
-            var getBookingResult = await getBookingResponse.Content.ReadAsAsync<BookingViewModel>();
-            Assert.Equal(postBookingRequest.RentalId, getBookingResult.RentalId);
-            Assert.Equal(postBookingRequest.Nights, getBookingResult.Nights);
-            Assert.Equal(postBookingRequest.Start, getBookingResult.Start);
-        }
+        var getBookingResult = await getBookingResponse.Content.ReadAsAsync<BookingViewModel>();
+        Assert.Equal(postBookingRequest.RentalId, getBookingResult.RentalId);
+        Assert.Equal(postBookingRequest.Nights, getBookingResult.Nights);
+        Assert.Equal(postBookingRequest.Start, getBookingResult.Start);
     }
 
     [Fact]
@@ -86,10 +84,8 @@ public class PostBookingTests
             Start = new DateTime(2002, 01, 02)
         };
 
-        using (var postBooking2Response = await _client.PostAsJsonAsync($"/api/v1/bookings", postBooking2Request))
-        {
-            Assert.False(postBooking2Response.IsSuccessStatusCode);
-            Assert.Equal(HttpStatusCode.InternalServerError, postBooking2Response.StatusCode);
-        }
+        using var postBooking2Response = await _client.PostAsJsonAsync($"/api/v1/bookings", postBooking2Request);
+        Assert.False(postBooking2Response.IsSuccessStatusCode);
+        Assert.Equal(HttpStatusCode.InternalServerError, postBooking2Response.StatusCode);
     }
 }

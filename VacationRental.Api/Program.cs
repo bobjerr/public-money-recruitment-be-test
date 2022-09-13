@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.OpenApi.Models;
-using VacationRental.Api;
 using VacationRental.Data;
 using VacationRental.Domain.Booking;
 using VacationRental.Domain.Booking.Create;
@@ -19,7 +18,7 @@ builder.Services.AddSingleton<IRentalRepository, RentalRepository>();
 builder.Services.AddSingleton<IBookingRepository, BookingRepository>();
 builder.Services.AddSingleton<BookingLocker>();
 
-var assemblies = new[] { typeof(Startup), typeof(VacationRental.Domain.Startup) };
+var assemblies = new[] { typeof(VacationRental.Domain.Startup) };
 
 builder.Services.AddMediatR(assemblies);
 

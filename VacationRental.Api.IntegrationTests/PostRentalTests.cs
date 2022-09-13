@@ -25,12 +25,10 @@ public class PostRentalTests
             postResult = await postResponse.Content.ReadAsAsync<ResourceIdViewModel>();
         }
 
-        using (var getResponse = await _client.GetAsync($"/api/v1/rentals/{postResult.Id}"))
-        {
-            Assert.True(getResponse.IsSuccessStatusCode);
+        using var getResponse = await _client.GetAsync($"/api/v1/rentals/{postResult.Id}");
+        Assert.True(getResponse.IsSuccessStatusCode);
 
-            var getResult = await getResponse.Content.ReadAsAsync<RentalViewModel>();
-            Assert.Equal(request.Units, getResult.Units);
-        }
+        var getResult = await getResponse.Content.ReadAsAsync<RentalViewModel>();
+        Assert.Equal(request.Units, getResult.Units);
     }
 }
