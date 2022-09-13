@@ -13,7 +13,7 @@ public class Command : IRequestHandler<Request, Response>
 
     public Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
-        var id = _rentalStore.Create(request.Units);
+        var id = _rentalStore.Create(request.Units, request.PreparationTimeInDays);
 
         return Task.FromResult(new Response(id));
     }

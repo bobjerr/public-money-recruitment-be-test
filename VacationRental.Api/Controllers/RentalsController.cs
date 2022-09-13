@@ -31,7 +31,7 @@ namespace VacationRental.Api.Controllers
         [HttpPost]
         public async Task<ResourceIdViewModel> Post(RentalBindingModel model)
         {
-            var query = new Domain.Rental.Create.Request(model.Units);
+            var query = new Domain.Rental.Create.Request(model.Units, model.PreparationTimeInDays);
 
             var result = await _mediator.Send(query);
 

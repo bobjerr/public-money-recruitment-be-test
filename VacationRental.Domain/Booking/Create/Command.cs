@@ -33,7 +33,7 @@ public class Command : IRequestHandler<Request, Response>
         var bookings = await GetBookings(request.RentalId);
         foreach (var booking in bookings)
         {
-            if (newBooking.Overlap(booking))
+            if (newBooking.Overlap(booking, rental.PreparationTimeInDays))
             {
                 count++;
 

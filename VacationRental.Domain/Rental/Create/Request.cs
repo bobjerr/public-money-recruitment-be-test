@@ -2,6 +2,6 @@
 
 namespace VacationRental.Domain.Rental.Create;
 
-public record Request(int Units) : IRequest<Response>
+public record Request(int Units, int PreparationTimeInDays) : IRequest<Response>
 {
 }

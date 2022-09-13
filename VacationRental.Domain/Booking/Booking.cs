@@ -14,9 +14,9 @@
         public int Nights { get; set; }
 
 
-        public bool Overlap(Booking other)
+        public bool Overlap(Booking other, int preparationTimeInDays)
         {
-            return Start < other.End && other.Start < End;
+            return Start <= other.End.AddDays(preparationTimeInDays) && other.Start <= End.AddDays(preparationTimeInDays);
         }
     }
 }

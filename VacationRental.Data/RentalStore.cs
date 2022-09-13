@@ -19,11 +19,11 @@ public class RentalStore : IRentalStore
         return _rentals[id];
     }
 
-    public int Create(int units)
+    public int Create(int units, int preparationTimeInDays)
     {
         var id = _rentals.Keys.Count + 1;
 
-        _rentals.Add(id, new Rental(id, units));
+        _rentals.Add(id, new Rental(id, units, preparationTimeInDays));
 
         return id;
     }
