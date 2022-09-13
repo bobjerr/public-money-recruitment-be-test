@@ -4,11 +4,13 @@ namespace VacationRental.Data
 {
     public class BookingStore : IBookingStore
     {
+        private readonly SequenceEmulator _sequenceEmulator;
         private readonly IDictionary<int, Booking> _bookings;
 
         public BookingStore()
         {
             _bookings = new Dictionary<int, Booking>();
+            _sequenceEmulator = new SequenceEmulator();
         }
 
         public Booking Get(int id)
@@ -26,8 +28,7 @@ namespace VacationRental.Data
 
         public int Save(Booking booking)
         {
-            //todo:
-            booking.Id = _bookings.Count + 1;
+            booking.Id = _sequenceEmulator.GetNextValue();
             _bookings[booking.Id] = booking;
 
             return booking.Id;
