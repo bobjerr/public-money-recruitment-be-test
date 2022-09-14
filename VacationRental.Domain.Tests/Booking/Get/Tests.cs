@@ -11,13 +11,13 @@ public class Tests
     {
         var booking = new Domain.Booking.Booking(id, 1, new DateOnly(2003, 2, 2), 5);
 
-        var bookingStore = new Mock<IBookingRepository>();
+        var bookingRepository = new Mock<IBookingRepository>();
 
-        bookingStore
+        bookingRepository
             .Setup(x => x.Get(It.Is<int>(x => x == id)))
             .Returns(booking);
 
-        var handler = new Domain.Booking.Get.Query(bookingStore.Object);
+        var handler = new Domain.Booking.Get.Query(bookingRepository.Object);
 
         var response = await handler.Handle(new Domain.Booking.Get.Request(id), CancellationToken.None);
 

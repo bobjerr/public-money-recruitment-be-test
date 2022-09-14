@@ -9,18 +9,18 @@ namespace VacationRental.Domain.Tests.Rental.Create
         [InlineData(5, 3, 4)]
         public async Task Successfully_Rental_Creation(int units, int preparationTimeInDays, int id)
         {
-            var rentalStore = new Mock<IRentalRepository>();
+            var rentalRepository = new Mock<IRentalRepository>();
 
-            rentalStore
+            rentalRepository
                 .Setup(x => x.Create(It.Is<int>(x => x == units), It.Is<int>(x => x == preparationTimeInDays)))
                 .Returns(id);
 
-            var handler = new Domain.Rental.Create.Command(rentalStore.Object);
+            var handler = new Domain.Rental.Create.Command(rentalRepository.Object);
 
             var response = await handler.Handle(new Domain.Rental.Create.Request(units, preparationTimeInDays), CancellationToken.None);
 
             Assert.Equal(id, response.Id);
-            rentalStore.VerifyAll();
+            rentalRepository.VerifyAll();
         }
     }
 }

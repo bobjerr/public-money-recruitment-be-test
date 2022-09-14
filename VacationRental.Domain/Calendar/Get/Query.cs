@@ -48,7 +48,7 @@ public class Query : IRequestHandler<Request, Response>
     private async Task<IEnumerable<Booking.Booking>> GetBookings(int rentalId)
     {
         var response = await _mediator.Send(new Booking.Get.Many.Request(rentalId));
-        return response.Booking;
+        return response.Bookings;
     }
 
     private async Task<Rental.Rental> GetRental(int rentalId)

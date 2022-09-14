@@ -52,13 +52,13 @@ public class Tests
 
     private static Mock<IBookingRepository> GetBookingRepositoryMock(int rentalId, List<Domain.Booking.Booking> bookings)
     {
-        var bookingStore = new Mock<IBookingRepository>();
+        var bookingRepository = new Mock<IBookingRepository>();
 
-        bookingStore
+        bookingRepository
             .Setup(x => x.GetByRentalId(It.Is<int>(x => x == rentalId)))
             .Returns(bookings);
 
-        return bookingStore;
+        return bookingRepository;
     }
 
     private static Mock<IMediator> GetMediatorMock(int rentalId, IBookingRepository bookingRepository)

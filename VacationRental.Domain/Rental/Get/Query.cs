@@ -4,13 +4,13 @@ namespace VacationRental.Domain.Rental.Get;
 
 public class Query : IRequestHandler<Request, Response>
 {
-    private readonly IRentalRepository _rentalStore;
+    private readonly IRentalRepository _rentalRepository;
 
-    public Query(IRentalRepository rentalStore)
+    public Query(IRentalRepository rentalRepository)
     {
-        _rentalStore = rentalStore;
+        _rentalRepository = rentalRepository;
     }
 
     public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-        => Task.FromResult(new Response(_rentalStore.Get(request.Id)));
+        => Task.FromResult(new Response(_rentalRepository.Get(request.Id)));
 }

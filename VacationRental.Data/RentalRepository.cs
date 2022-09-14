@@ -27,4 +27,12 @@ public class RentalRepository : IRentalRepository
 
         return id;
     }
+
+    public void Update(Rental rental)
+    {
+        if (rental == null)
+            throw new ArgumentNullException(nameof(rental));
+
+        _rentals[rental.Id] = rental;
+    }
 }

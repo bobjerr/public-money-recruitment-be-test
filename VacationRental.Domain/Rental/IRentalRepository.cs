@@ -5,4 +5,6 @@ public interface IRentalRepository
     Rental Get(int id);
 
     int Create(int units, int preparationTimeInDays);
+
+    void Update(Rental rental);
 }

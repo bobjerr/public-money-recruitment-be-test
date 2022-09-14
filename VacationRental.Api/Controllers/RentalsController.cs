@@ -40,4 +40,13 @@ public class RentalsController : ControllerBase
             Id = result.Id
         };
     }
+
+    [HttpPut]
+    [Route("{rentalId:int}")]
+    public async Task Put(int rentalId, RentalBindingModel model)
+    {
+        var query = new Domain.Rental.Update.Request(rentalId, model.Units, model.PreparationTimeInDays);
+
+        await _mediator.Send(query);
+    }
 }

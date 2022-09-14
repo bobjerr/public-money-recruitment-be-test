@@ -13,31 +13,31 @@ public class SuccessCreation
     {
         int rentalId = 1;
 
-        var bookingStoreMock = GetBookingStoreMock(id, rentalId, bookings);
+        var bookingRepositoryMock = GetBookingRepositoryMock(id, rentalId, bookings);
 
-        var mediatorMock = GetMediatorMock(rentalId, bookingStoreMock.Object);
+        var mediatorMock = GetMediatorMock(rentalId, bookingRepositoryMock.Object);
 
-        var handler = new Command(mediatorMock.Object, bookingStoreMock.Object, new BookingLocker());
+        var handler = new Command(mediatorMock.Object, bookingRepositoryMock.Object, new SemaphorService());
 
         var response = await handler.Handle(new Request(5, new DateOnly(2022, 2, 26), 4), CancellationToken.None);
 
         Assert.Equal(id, response.Id);
-        bookingStoreMock.VerifyAll();
+        bookingRepositoryMock.VerifyAll();
     }
 
-    private static Mock<IBookingRepository> GetBookingStoreMock(int id, int rentalId, List<Domain.Booking.Booking> bookings)
+    private static Mock<IBookingRepository> GetBookingRepositoryMock(int id, int rentalId, List<Domain.Booking.Booking> bookings)
     {
-        var bookingStore = new Mock<IBookingRepository>();
+        var bookingRepository = new Mock<IBookingRepository>();
 
-        bookingStore
+        bookingRepository
             .Setup(x => x.GetByRentalId(It.Is<int>(x => x == rentalId)))
             .Returns(bookings);
 
-        bookingStore
+        bookingRepository
             .Setup(x => x.Save(It.IsAny<Domain.Booking.Booking>()))
             .Returns(id);
 
-        return bookingStore;
+        return bookingRepository;
     }
 
     private static Mock<IMediator> GetMediatorMock(int rentalId, IBookingRepository bookingRepository)

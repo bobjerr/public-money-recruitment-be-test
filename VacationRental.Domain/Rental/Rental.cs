@@ -11,10 +11,10 @@ public class Rental
     public Rental(int id, int units, int preparationTimeInDays)
     {
         if (units < 0)
-            throw new ArgumentOutOfRangeException(nameof(units), "Should be positive");
+            throw new ArgumentOutOfRangeException(nameof(units), "Must be positive");
 
         if (preparationTimeInDays < 0)
-            throw new ArgumentOutOfRangeException(nameof(preparationTimeInDays), "Should be positive");
+            throw new ArgumentOutOfRangeException(nameof(preparationTimeInDays), "Must be positive");
 
         Id = id;
         Units = units;

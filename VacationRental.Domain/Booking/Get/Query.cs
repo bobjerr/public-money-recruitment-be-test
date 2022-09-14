@@ -4,13 +4,13 @@ namespace VacationRental.Domain.Booking.Get;
 
 public class Query : IRequestHandler<Request, Response>
 {
-    private readonly IBookingRepository _bookingStore;
+    private readonly IBookingRepository _bookingRepository;
 
-    public Query(IBookingRepository bookingStore)
+    public Query(IBookingRepository bookingRepository)
     {
-        _bookingStore = bookingStore;
+        _bookingRepository = bookingRepository;
     }
 
     public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-        => Task.FromResult(new Response(_bookingStore.Get(request.Id)));
+        => Task.FromResult(new Response(_bookingRepository.Get(request.Id)));
 }

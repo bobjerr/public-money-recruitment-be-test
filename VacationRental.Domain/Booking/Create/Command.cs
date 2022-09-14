@@ -5,14 +5,14 @@ namespace VacationRental.Domain.Booking.Create;
 public class Command : IRequestHandler<Request, Response>
 {
     private readonly IMediator _mediator;
-    private readonly IBookingRepository _bookingStore;
-    private readonly BookingLocker _bookingLocker;
+    private readonly IBookingRepository _bookingRepository;
+    private readonly SemaphorService _semaphorService;
 
-    public Command(IMediator mediator, IBookingRepository bookingStore, BookingLocker bookingLocker)
+    public Command(IMediator mediator, IBookingRepository bookingRepository, SemaphorService semaphorService)
     {
         _mediator = mediator;
-        _bookingStore = bookingStore;
-        _bookingLocker = bookingLocker;
+        _bookingRepository = bookingRepository;
+        _semaphorService = semaphorService;
     }
 
     public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
@@ -28,7 +28,8 @@ public class Command : IRequestHandler<Request, Response>
 
         var bookings = await GetBookings(request.RentalId);
 
-        lock (_bookingLocker.GetLocker(request.RentalId))
+        await _semaphorService.GetSemaphor(request.RentalId).WaitAsync(cancellationToken);
+        try
         {
             var units = Enumerable.Range(1, rental.Units).ToHashSet();
             foreach (var booking in bookings)
@@ -48,12 +49,16 @@ public class Command : IRequestHandler<Request, Response>
 
             return new Response(id);
         }
+        finally
+        {
+            _semaphorService.GetSemaphor(request.RentalId).Release();
+        }
     }
 
     private async Task<IEnumerable<Booking>> GetBookings(int rentalId)
     {
         var response = await _mediator.Send(new Get.Many.Request(rentalId));
-        return response.Booking;
+        return response.Bookings;
     }
 
     private async Task<Rental.Rental> GetRental(int rentalId)
@@ -64,6 +69,6 @@ public class Command : IRequestHandler<Request, Response>
 
     private int SaveBooking(Booking newBooking)
     {
-        return _bookingStore.Save(newBooking);
+        return _bookingRepository.Save(newBooking);
     }
 }
