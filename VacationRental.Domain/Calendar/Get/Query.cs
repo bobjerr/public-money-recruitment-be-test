@@ -16,7 +16,7 @@ public class Query : IRequestHandler<Request, Response>
         if (request.Nights < 0)
             throw new ApplicationException("Nights must be positive");
 
-        var rental = GetRental(request.RentalId);
+        var rental = await GetRental(request.RentalId);
 
         var calendar = new Calendar(request.RentalId);
 
@@ -24,10 +24,22 @@ public class Query : IRequestHandler<Request, Response>
         {
             var date = request.Start.AddDays(i);
 
-            var bookings = (await GetBookings(request.RentalId))
-                .Where(b => b.Start <= date && b.Start.AddDays(b.Nights) > date);
+            var bookings = await GetBookings(request.RentalId);
 
-            calendar.AddDate(date, bookings);
+            var calendarDate = new CalendarDate(date);
+            foreach (var booking in bookings)
+            {
+                if (booking.Start <= date && booking.Start.AddDays(booking.Nights) > date)
+                {
+                    calendarDate.AddBooking(booking);
+                }
+                else if (booking.End <= date && booking.End.AddDays(rental.PreparationTimeInDays) > date)
+                {
+                    calendarDate.AddPreparation(booking.Unit);
+                }
+            }
+
+            calendar.AddDate(calendarDate);
         }
 
         return new Response(calendar);

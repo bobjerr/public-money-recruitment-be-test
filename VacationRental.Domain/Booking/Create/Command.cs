@@ -30,17 +30,20 @@ public class Command : IRequestHandler<Request, Response>
 
         lock (_bookingLocker.GetLocker(request.RentalId))
         {
+            var units = Enumerable.Range(1, rental.Units).ToHashSet();
             foreach (var booking in bookings)
             {
                 if (newBooking.Overlap(booking, rental.PreparationTimeInDays))
                 {
                     count++;
+                    units.Remove(booking.Unit);
 
                     if (count >= rental.Units)
                         throw new ApplicationException("Not available");
                 }
             }
 
+            newBooking.Unit = units.Min();
             var id = SaveBooking(newBooking);
 
             return new Response(id);

@@ -29,7 +29,12 @@ public class CalendarController : ControllerBase
                     Date = d.Date.ToDateTime(TimeOnly.MinValue),
                     Bookings = d.Bookings.Select(b => new CalendarBookingViewModel
                     {
-                        Id = b.Id
+                        Id = b.Id,
+                        Unit = b.Unit
+                    }).ToList(),
+                    PreparationTimes = d.Preparations.Select(p => new PreparationViewModel
+                    {
+                        Unit = p.Unit
                     }).ToList()
                 }).ToList()
         };

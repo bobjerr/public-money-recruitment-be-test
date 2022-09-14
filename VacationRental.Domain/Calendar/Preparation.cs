@@ -1,13 +1,11 @@
 ﻿namespace VacationRental.Domain.Calendar
 {
-    public class CalendarBooking
+    public class Preparation
     {
-        public int Id { get; }
         public int Unit { get; }
 
-        public CalendarBooking(int id, int unit)
+        public Preparation(int unit)
         {
-            Id = id;
             Unit = unit;
         }
     }

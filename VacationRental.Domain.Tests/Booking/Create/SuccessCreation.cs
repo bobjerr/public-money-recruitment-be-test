@@ -15,7 +15,7 @@ public class SuccessCreation
 
         var bookingStoreMock = GetBookingStoreMock(id, rentalId, bookings);
 
-        var mediatorMock = GetMediatorMock(rentalId, bookingStoreMock);
+        var mediatorMock = GetMediatorMock(rentalId, bookingStoreMock.Object);
 
         var handler = new Command(mediatorMock.Object, bookingStoreMock.Object, new BookingLocker());
 
@@ -40,15 +40,15 @@ public class SuccessCreation
         return bookingStore;
     }
 
-    private static Mock<IMediator> GetMediatorMock(int rentalId, Mock<IBookingRepository> bookingStoreMock)
+    private static Mock<IMediator> GetMediatorMock(int rentalId, IBookingRepository bookingRepository)
     {
         var mediator = new Mock<IMediator>();
 
-        var test = new Domain.Booking.Get.Many.Query(bookingStoreMock.Object);
+        var query = new Domain.Booking.Get.Many.Query(bookingRepository);
 
         mediator
             .Setup(x => x.Send(It.IsAny<Domain.Booking.Get.Many.Request>(), It.IsAny<CancellationToken>()))
-            .Returns(async () => await test.Handle(new Domain.Booking.Get.Many.Request(rentalId), CancellationToken.None));
+            .Returns(async () => await query.Handle(new Domain.Booking.Get.Many.Request(rentalId), CancellationToken.None));
 
         mediator
             .Setup(x => x.Send(It.IsAny<Domain.Rental.Get.Request>(), It.IsAny<CancellationToken>()))

@@ -12,6 +12,8 @@
 
         public int Nights { get; }
 
+        public int Unit { get; set; }
+
         public Booking(int rentalId, DateOnly start, int nights)
         {
             if (nights < 0)

@@ -2,11 +2,11 @@
 {
     public class Calendar
     {
-        private List<CalendarDate> _dates;
+        private readonly List<CalendarDate> _dates;
 
         public int RentalId { get; }
 
-        public IReadOnlyCollection<CalendarDate> Dates => _dates;
+        public IReadOnlyList<CalendarDate> Dates => _dates;
 
         public Calendar(int rentalId)
         {
@@ -14,9 +14,11 @@
             _dates = new List<CalendarDate>();
         }
 
-        public void AddDate(DateOnly date, IEnumerable<Booking.Booking> bookings)
+        public void AddDate(CalendarDate calendarDate)
         {
-            var calendarDate = new CalendarDate(date, bookings);
+            if (calendarDate == null)
+                throw new ArgumentNullException(nameof(calendarDate));
+
             _dates.Add(calendarDate);
         }
     }
