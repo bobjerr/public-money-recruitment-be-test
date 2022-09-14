@@ -1,43 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VacationRental.Api.Models;
 
-namespace VacationRental.Api.Controllers
+namespace VacationRental.Api.Controllers;
+
+[Route("api/v1/rentals")]
+[ApiController]
+public class RentalsController : ControllerBase
 {
-    [Route("api/v1/rentals")]
-    [ApiController]
-    public class RentalsController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public RentalsController(IMediator mediator)
     {
-        private readonly IDictionary<int, RentalViewModel> _rentals;
+        _mediator = mediator;
+    }
 
-        public RentalsController(IDictionary<int, RentalViewModel> rentals)
+    [HttpGet]
+    [Route("{rentalId:int}")]
+    public async Task<RentalViewModel> Get(int rentalId)
+    {
+        var result = await _mediator.Send(new Domain.Rental.Get.Request(rentalId));
+
+        return new RentalViewModel
         {
-            _rentals = rentals;
-        }
+            Id = result.Rental.Id,
+            Units = result.Rental.Units
+        };
+    }
 
-        [HttpGet]
-        [Route("{rentalId:int}")]
-        public RentalViewModel Get(int rentalId)
+    [HttpPost]
+    public async Task<ResourceIdViewModel> Post(RentalBindingModel model)
+    {
+        var query = new Domain.Rental.Create.Request(model.Units, model.PreparationTimeInDays);
+
+        var result = await _mediator.Send(query);
+
+        return new ResourceIdViewModel
         {
-            if (!_rentals.ContainsKey(rentalId))
-                throw new ApplicationException("Rental not found");
+            Id = result.Id
+        };
+    }
 
-            return _rentals[rentalId];
-        }
+    [HttpPut]
+    [Route("{rentalId:int}")]
+    public async Task Put(int rentalId, RentalBindingModel model)
+    {
+        var query = new Domain.Rental.Update.Request(rentalId, model.Units, model.PreparationTimeInDays);
 
-        [HttpPost]
-        public ResourceIdViewModel Post(RentalBindingModel model)
-        {
-            var key = new ResourceIdViewModel { Id = _rentals.Keys.Count + 1 };
-
-            _rentals.Add(key.Id, new RentalViewModel
-            {
-                Id = key.Id,
-                Units = model.Units
-            });
-
-            return key;
-        }
+        await _mediator.Send(query);
     }
 }
