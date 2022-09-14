@@ -8,7 +8,7 @@ namespace VacationRental.Domain.Tests.Booking.Create;
 public class FailedCreation
 {
     [Fact]
-    public async Task InvalidNumberOfNights()
+    public async Task Invalid_number_of_nights()
     {
         var handler = new Command(Mock.Of<IMediator>(), Mock.Of<IBookingRepository>(), new SemaphorService());
 
@@ -21,7 +21,7 @@ public class FailedCreation
 
     [Theory]
     [MemberData(nameof(SuccessCreationData))]
-    public async Task FailedBookingCreation(int id, List<Domain.Booking.Booking> bookings)
+    public async Task Unsuccessfully_create_booking(int id, List<Domain.Booking.Booking> bookings)
     {
         int rentalId = 1;
 

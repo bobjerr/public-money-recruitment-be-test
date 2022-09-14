@@ -11,7 +11,7 @@ public class Tests
 {
 
     [Fact]
-    public async Task InvalidNumberOfNights()
+    public async Task Invalid_number_of_nights()
     {
         var handler = new Query(Mock.Of<IMediator>());
 

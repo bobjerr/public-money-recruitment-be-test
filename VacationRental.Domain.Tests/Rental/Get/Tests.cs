@@ -7,7 +7,7 @@ public class Exceptions
 {
     [Theory]
     [InlineData(5)]
-    public async Task SuccessfullyGetRental(int id)
+    public async Task Successfully_get_rentals(int id)
     {
         var rental = new Domain.Rental.Rental(id, 5, 8);
         var rentalRepository = new Mock<IRentalRepository>();
@@ -27,7 +27,7 @@ public class Exceptions
 
     [Theory]
     [InlineData(5)]
-    public async Task FailedGetRental(int id)
+    public async Task Unsuccessfully_get_rentals(int id)
     {
         var rental = new Domain.Rental.Rental(id, 5, 8);
         var rentalRepository = new Mock<IRentalRepository>();

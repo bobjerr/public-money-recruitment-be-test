@@ -18,10 +18,10 @@ public class Command : IRequestHandler<Request, Unit>
     public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
     {
         if (request.PreparationTimeInDays < 0)
-            throw new ArgumentOutOfRangeException("Preparation time must be positive");
+            throw new ArgumentOutOfRangeException(nameof(request.PreparationTimeInDays), "Preparation time must be positive");
 
         if (request.Units < 0)
-            throw new ArgumentOutOfRangeException("Units must be greater than 0");
+            throw new ArgumentOutOfRangeException(nameof(request.Units), "Units must be greater than 0");
 
         var rental = await GetRental(request);
 

@@ -9,7 +9,7 @@ public class SuccessCreation
 {
     [Theory]
     [MemberData(nameof(SuccessCreationData))]
-    public async Task SuccessfullyCreatedBooking(int id, List<Domain.Booking.Booking> bookings)
+    public async Task Successfully_create_booking(int id, List<Domain.Booking.Booking> bookings)
     {
         int rentalId = 1;
 

@@ -7,7 +7,7 @@ public class Tests
 {
     [Theory]
     [InlineData(5)]
-    public async Task SuccessfullyGetBooking(int id)
+    public async Task Successfully_get_booking(int id)
     {
         var booking = new Domain.Booking.Booking(id, 1, new DateOnly(2003, 2, 2), 5);
 

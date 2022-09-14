@@ -7,7 +7,7 @@ namespace VacationRental.Domain.Tests.Rental.Create
     {
         [Theory]
         [InlineData(5, 3, 4)]
-        public async Task Successfully_Rental_Creation(int units, int preparationTimeInDays, int id)
+        public async Task Successfully_create_rental(int units, int preparationTimeInDays, int id)
         {
             var rentalRepository = new Mock<IRentalRepository>();
 
